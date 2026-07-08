@@ -2,26 +2,27 @@ import json
 import os
 from datetime import datetime
 
+# Create reports folder automatically if it doesn't exist
+os.makedirs("reports", exist_ok=True)
+
 HISTORY_PATH = "reports/history.json"
 
 
 def save_session(data):
     data["timestamp"] = str(datetime.now())
 
-    # if file exists, load old history
+    # Load existing history safely
     if os.path.exists(HISTORY_PATH):
-        with open(HISTORY_PATH, "r") as f:
-            try:
+        try:
+            with open(HISTORY_PATH, "r") as f:
                 history = json.load(f)
-            except:
-                history = []
+        except (json.JSONDecodeError, FileNotFoundError):
+            history = []
     else:
         history = []
 
-    # append new session
     history.append(data)
 
-    # save back
     with open(HISTORY_PATH, "w") as f:
         json.dump(history, f, indent=4)
 
@@ -31,6 +32,9 @@ def save_session(data):
 def load_history():
     if not os.path.exists(HISTORY_PATH):
         return []
-    
-    with open(HISTORY_PATH, "r") as f:
-        return json.load(f)
+
+    try:
+        with open(HISTORY_PATH, "r") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, FileNotFoundError):
+        return []

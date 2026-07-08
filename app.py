@@ -5,6 +5,10 @@ from models.analysis import evaluate
 from utils.pdf_generator import generate_pdf
 from utils.storage import save_session, load_history
 from utils.audio_metrics import analyze_pauses
+import os
+
+os.makedirs("audio/temp", exist_ok=True)
+os.makedirs("reports", exist_ok=True)
 
 st.set_page_config(page_title="VBCUA", layout="wide")
 st.markdown("""

@@ -46,3 +46,6 @@ dist/
 
 # Jupyter
 .ipynb_checkpoints/
+
+reports/history.json
+reports/session.json
